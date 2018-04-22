@@ -1,4 +1,4 @@
-﻿package com.mustafazorbaz.controllers;
+package com.mustafazorbaz.controllers;
  
 import javax.servlet.http.HttpSession;
 
@@ -66,9 +66,93 @@ public class MerchantTransactionController {
 	@RequestMapping("/transactionReport")
 	public ModelAndView transactionReport(@ModelAttribute("transactionReport")TransactionReport report, HttpSession session) {
 		ModelAndView view = new ModelAndView("dashboardsTransactionReport");  
-		
+		 User userSession = (User)session.getAttribute("user");
+	   	 System.out.println(userSession.getToken());  
+	   	  merchantTransactionServices.getTransactionReport(report, userSession.getToken());
+	   	  
+	   	 if(report.getStatus().equals("APPROVED")){
+		 
+			 view.addObject("transactionReport",merchantTransactionServices.getTransactionReport(report, userSession.getToken()));
+			 view.addObject("message","Sonuç Başarılı");   
+			 view.addObject("user",userSession);
+		     return view;
+		 }
+		 else if(report.getStatus().equals("DECLINED")){
+			 view.addObject("message","Sonuç Başarısız");  
+			 view.addObject("user",userSession);
+		     return view;
+		  }
+	   	 view.addObject("message","Başarısız...");  
 	     return view;
 	}
+	@RequestMapping("/transactionReportTest")
+	public ModelAndView transactionReportTest(User user,HttpSession session) {
+		ModelAndView view = new ModelAndView("dashboardsTransactionReport");  
+		 User userSession = (User)session.getAttribute("user");
+	   	 System.out.println(userSession.getToken());
+	   	 TransactionReport report=new TransactionReport("2015-10-01", "2015-10-01", 1, 1);
+	  	 view.addObject("transactionReport",merchantTransactionServices.getTransactionReportTest());
+		 view.addObject("message","Sonuç Başarılı");   
+		 view.addObject("user",userSession);
+		 return view;
+		  
+	}
 	
-
+	@RequestMapping("/transactionQueryForm")
+	public ModelAndView transactionQueryForm(HttpSession session) {
+		TransactionQuery query =new TransactionQuery(); 
+		ModelAndView view = new ModelAndView("dashboardsTransactionQueryForm");  
+		 User userSession = (User)session.getAttribute("user");
+		 view.addObject("user",userSession);
+	     view.addObject("transactionQuery",query);  
+	    return view;
+	}
+	@RequestMapping("/transactionQuery")
+	public ModelAndView transactionReport(@ModelAttribute("transactionQuery")TransactionQuery query, HttpSession session) {
+		ModelAndView view = new ModelAndView("dashboardsTransactionQuery");  
+		 User userSession = (User)session.getAttribute("user");
+		 view.addObject("user",userSession);
+		 view.addObject("message","Sonuç Başarılı");
+		 view.addObject("transactionQuery",merchantTransactionServices.getTransactionQuery(query, userSession.getToken()));
+	     return view;
+	}
+	@RequestMapping("/transactionQueryTest")
+	public ModelAndView transactionQueryTest( HttpSession session) {
+		ModelAndView view = new ModelAndView("dashboardsTransactionQuery");
+		 User userSession = (User)session.getAttribute("user");
+		 view.addObject("user",userSession);
+		 view.addObject("message","Sonuç Başarılı");
+		 
+		 view.addObject("transactionQuery",merchantTransactionServices.getTransactionQueryTest());
+	   	  
+	     return view;
+	}
+	@RequestMapping("/getClientForm")
+	public ModelAndView getClientForm(HttpSession session) {
+		Client client =new Client(); 
+		ModelAndView view = new ModelAndView("dashboardsGetClientForm");  
+		 User userSession = (User)session.getAttribute("user");
+		 view.addObject("user",userSession);
+	     view.addObject("getClient",client);  
+	    return view;
+	}
+	@RequestMapping("/getClient")
+	public ModelAndView getClient(@ModelAttribute("getClient")  Client client, HttpSession session) {
+		ModelAndView view = new ModelAndView("dashboardsGetClient");  
+		 User userSession = (User)session.getAttribute("user");
+		 view.addObject("user",userSession);
+		 view.addObject("message","Sonuç Başarılı");
+		 view.addObject("client",merchantTransactionServices.getClient(client, userSession.getToken()));
+	     return view;
+	}
+	@RequestMapping("/getClientTest")
+	public ModelAndView getClientTest( HttpSession session) {
+		ModelAndView view = new ModelAndView("dashboardsGetClient");
+		 User userSession = (User)session.getAttribute("user");
+		 view.addObject("user",userSession);
+		 view.addObject("message","Sonuç Başarılı");
+		 view.addObject("transactionId","1-1444392550-1");
+		 view.addObject("Authorization",userSession.getToken());
+	     return view;
+	}
 }

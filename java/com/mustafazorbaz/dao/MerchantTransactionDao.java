@@ -9,7 +9,11 @@ import com.mustafazorbaz.entities.Transaction;
 import com.mustafazorbaz.entities.TransactionQuery;
 import com.mustafazorbaz.entities.TransactionReport;
 import com.mustafazorbaz.entities.User;
- 
+ /**
+  * 
+  * @author Mustafa
+  *
+  */
 public interface   MerchantTransactionDao {
 
 	public User getUser(User user);
