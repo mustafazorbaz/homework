@@ -92,7 +92,36 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     	</tbody>   
         </table>
         
---> 
+-->
+<p id="success"></p>
+<script type="text/javascript">
+/*
+obj = JSON.parse(text);
+document.getElementById("success").innerHTML =
+obj.employees[1].firstName + " " + obj.employees[1].lastName;
+*/
+//var transactionId="2323";
+//var Authorization="80958twjklejtAGAOYIT";
+ 
+var $transactionId = $('#transactionId').text();
+var $Authorization = $('#Authorization').text();
+
+$.ajax({ 
+    type: 'POST', 
+    url: 'https://sandbox-reporting.rpdpymnt.com/api/v3/client', 
+    data: { transactionId: 'transactionId',Authorization: 'Authorization' }, 
+    dataType: 'json',
+    success: function (data) { 
+    	alert($Authorization+"-");
+    	 console.log($Authorization);
+       $.each(data, function(index, element) {
+            $('body').append($('<div>', {
+                text: element.name
+            }));
+        });
+        
+    }
+});
 
 </script>
   <!-- End page content -->
